@@ -9,9 +9,9 @@ RUN comfy-node-install comfyui-impact-pack comfyui-impact-subpack
 
 # Pony base - Civitai token via BuildKit secret, so it never lands in an image layer.
 RUN --mount=type=secret,id=civitai \
-    TOKEN="$(cat /run/secrets/civitai)" && \
+    CIVITAI_API_TOKEN="$(cat /run/secrets/civitai)" \
     comfy model download \
-      --url "https://civitai.com/api/download/models/2884631?token=${TOKEN}" \
+      --url "https://civitai.com/api/download/models/2884631" \
       --relative-path models/checkpoints --filename cyberrealistic_pony.safetensors
 
 RUN comfy model download \
