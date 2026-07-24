@@ -16,6 +16,10 @@ RUN comfy model download \
       --url "https://huggingface.co/Bingsu/adetailer/resolve/main/face_yolov8m.pt" \
       --relative-path models/ultralytics/bbox --filename face_yolov8m.pt
 
+# --- Roxy LoRA (Illustrious family), from the loras-v1 GitHub release ---
+RUN comfy model download --url "https://github.com/zg-claude/muse-comfy-worker/releases/download/loras-v1/roxy_illust.safetensors" \
+      --relative-path models/loras --filename roxy_illust.safetensors
+
 # --- FaceDetailer node + deps ---
 RUN comfy-node-install comfyui-impact-pack comfyui-impact-subpack
 RUN for r in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$r" || true; done && \

@@ -16,6 +16,10 @@ RUN comfy model download \
       --url "https://huggingface.co/Bingsu/adetailer/resolve/main/face_yolov8m.pt" \
       --relative-path models/ultralytics/bbox --filename face_yolov8m.pt
 
+# --- Roxy LoRA (Pony family), from the loras-v1 GitHub release ---
+RUN comfy model download --url "https://github.com/zg-claude/muse-comfy-worker/releases/download/loras-v1/roxy_pony.safetensors" \
+      --relative-path models/loras --filename roxy_pony.safetensors
+
 # --- FaceDetailer node + deps (iterate here; models above stay cached) ---
 RUN comfy-node-install comfyui-impact-pack comfyui-impact-subpack
 # Install the nodes' OWN requirements (Impact Pack imports segment-anything at LOAD time even
