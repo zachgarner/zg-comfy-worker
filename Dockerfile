@@ -6,6 +6,11 @@
 FROM runpod/worker-comfyui:5.8.6-base
 
 RUN comfy-node-install comfyui-impact-pack comfyui-impact-subpack
+# comfy-node-install registers the nodes but does NOT pull their Python deps, so
+# FaceDetailer fails to import at runtime ("Node 'FaceDetailer' not found") - the exact
+# same failure the pod hit Jul 23. Install the deps explicitly into ComfyUI's env.
+RUN python -m pip install --no-cache-dir \
+      dill piexif ultralytics segment-anything scikit-image opencv-python-headless
 
 # Pony base - Civitai token via BuildKit secret, so it never lands in an image layer.
 RUN --mount=type=secret,id=civitai \
