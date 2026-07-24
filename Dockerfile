@@ -18,5 +18,9 @@ RUN comfy model download \
 
 # --- FaceDetailer node + deps (iterate here; models above stay cached) ---
 RUN comfy-node-install comfyui-impact-pack comfyui-impact-subpack
-# numpy<2 kept for torch/opencv ABI; skip segment-anything (we don't use the SAM path).
-RUN python -m pip install --no-cache-dir "numpy<2" dill piexif ultralytics scikit-image opencv-python-headless
+# Install the nodes' OWN requirements (Impact Pack imports segment-anything at LOAD time even
+# without the SAM path, so hand-picking deps and dropping it makes FaceDetailer silently fail
+# to register). The worker's ComfyUI is a venv at /opt/venv; `pip` here resolves to it.
+# numpy<2 LAST so it wins the ABI (a requirement may pull numpy 2.x); headless opencv for no GUI libs.
+RUN for r in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$r" || true; done && \
+    pip install --no-cache-dir opencv-python-headless "numpy<2"
