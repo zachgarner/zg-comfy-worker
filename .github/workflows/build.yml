@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        model: [pony, illustrious, chroma1-hd]
+        model: [pony, illustrious, chroma1-hd, friskydingo, lustify_zenith, juggernaut]
     steps:
       - uses: actions/checkout@v4
       - name: Gate
